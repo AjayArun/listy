@@ -13,28 +13,42 @@
 	});
 
 	$(window).on('hashchange', function(){
-		console.log("check : " + window.location.hash);
+		// console.log("check : " + window.location.hash);
 		render(window.location.hash);
 	});
 
 	$("body").on("click", ".logout", function() {
-		console.log("logout click action");
+		// console.log("logout click action");
 		userObj.removeUser(this.id);
 		window.open(window.location.origin + "/options/index.html", "_self");
 	});
 
 	$("body").on("click", ".list-user", function() {
-		console.log("id" + this.id);
+		// console.log("id" + this.id);
 		selectedUser = userObj.getUserObj(this.id);
 		lists = twitter_urlcall.tUrlCaller(selectedUser, "https://api.twitter.com/1.1/lists/list.json", "GET", {"user_id" : selectedUser.user_id});
-		console.log(" lists : " + JSON.stringify(lists));
+		// console.log(" lists : " + JSON.stringify(lists));
 		$("[id=list-lists]").html(Handlebars.templates["list-lists-template.handlebarse"](lists))
 	});
 
 	$("body").on("click", ".list-list", function() {
-		listusers = twitter_urlcall.tUrlCaller(selectedUser, "https://api.twitter.com/1.1/lists/members.json", "GET", {"slug" : this.id,"owner_id" : selectedUser.user_id});
+		listusers = twitter_urlcall.tUrlCaller(selectedUser, "https://api.twitter.com/1.1/lists/members.json", "GET", {"slug" : $(this).attr("slug"),"owner_id" : selectedUser.user_id});
 		//console.log(JSON.stringify(listusers.users));
 		$("[id=lists-users]").html(Handlebars.templates["list-users-template.handlebarse"](listusers.users))
+		$("[id=lists-users]").attr("list_id",this.id);
+	});
+
+	$("body").on("click", ".delete-list", function(event){
+		event.stopPropagation();
+		var returnObj = twitter_urlcall.tUrlCaller(selectedUser, "https://api.twitter.com/1.1/lists/destroy.json", "POST", {"slug" : $(this).parent().attr("slug"),"list_id" : this.parentElement.id });
+		if($("#lists-users").attr("list_id") == this.parentElement.id){	$("#lists-users").empty();	}
+		this.parentElement.remove();
+	});
+
+	$("body").on("click", ".delete-user", function(event){
+		event.stopPropagation();
+		var returnObj = twitter_urlcall.tUrlCaller(selectedUser, "https://api.twitter.com/1.1/lists/members/destroy_all.json", "POST", {"user_id" : $(this).parents("div.lists-user").attr("id"),"list_id" : $(this).parents("div.lists-users").attr("list_id") });
+		$(this).parents('div.lists-user').remove();
 	});
 
 	function renderAccountsPage(account) {
@@ -77,20 +91,20 @@
 
 				    if (window.location.search.slice(1)) {
 				    	data = twitter_urlcall.access_Token(twitter_urlcall.t_response_to_json(window.location.search.slice(1)));
-				    	console.log(":)) " + JSON.stringify(data));
+				    	// console.log(":)) " + JSON.stringify(data));
 				    	userObj.addUser(data);
 				    	window.open(window.location.origin + "/options/index.html", "_self");
 				    }
 
-				    console.log("routing works check");
+				    // console.log("routing works check");
 					userList = userObj.getUserList();
-					console.log("routing works userList : " + JSON.stringify(userList));
+					// console.log("routing works userList : " + JSON.stringify(userList));
 					if(userList) {
 					if(userList.length > 0) {
 						renderAccountsPage(userList);
 					}
 					else {
-						console.log("else part");
+						// console.log("else part");
 						$("#accountList").html('<div class="account"><span><h3>No accounts connected</h3></span></div>')
 					}
 					}

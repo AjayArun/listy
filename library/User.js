@@ -32,13 +32,13 @@ UserManager = (function () {
         test = false;
         $.each(userList, function(i,obj) {
           if (obj.user_id === userObj.user_id) {
-            console.log("User already present.");
+            // console.log("User already present.");
             test = true;
           }
         });
 
         if (!test) {
-          console.log("User not present already " + userList);
+          // console.log("User not present already " + userList);
           userList.push(userObj);
           store.set('userList', userList); 
         }
@@ -48,7 +48,7 @@ UserManager = (function () {
         t1 = [];
         $.each(userList, function(i,obj) {
           if (obj.user_id === user_id) {
-            console.log("removeUser : " + user_id);
+            // console.log("removeUser : " + user_id);
           }
           else {
              t1.push(obj);

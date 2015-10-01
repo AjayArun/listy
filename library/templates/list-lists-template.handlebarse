@@ -1,5 +1,6 @@
 {{#each this}}
-	<div class="list-list" id="{{slug}}" style="cursor: pointer;">
+	<div class="list-list" id="{{id}}" slug="{{slug}}" style="cursor: pointer;">
+		<img class="delete-icon delete-list" width="20" height="20" src="/img/delete-button.png">
 		<h1>{{slug}}</h1>
     </div>
 {{/each}}

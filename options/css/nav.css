@@ -207,3 +207,7 @@ ul {
   border: 2px solid navy;
   margin: 2px;
 }
+
+.delete-icon{
+  float: right;
+}

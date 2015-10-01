@@ -4,6 +4,7 @@
 			<tr>
 				<td><img width="50" height="50" src="{{profile_image_url}}"></td>
 				<td><h1>{{name}}</h1></td>
+				<td><img class="delete-icon delete-user" width="20" height="20" src="/img/delete-button.png"></td>
 			</tr>
 		</table>
 </div>
